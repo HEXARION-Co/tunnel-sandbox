@@ -12,15 +12,12 @@ jobs:
   linux-tests:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    env:
-      PYTHONHASHSEED: "0"
-      PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+      # Harnais du Tunnel : les tests tournent dans le conteneur verrouillé de tunnel-ci
+      # (sans réseau, sans secret, lecture seule), épinglé par SHA complet.
+      - uses: HEXARION-Co/tunnel-ci/actions/run-tests@b095b5e5012a15bb33435181f31c927536dc8471
         with:
-          python-version: "3.12"
-      - run: python -m py_compile sandbox/*.py tests/*.py
-      - run: python -m unittest discover -s tests -v
+          test-command: python -m py_compile sandbox/*.py tests/*.py && python -m unittest discover -s tests -v
