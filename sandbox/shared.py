@@ -1,2 +1,6 @@
 def shared() -> str:
-    return "lambda1"
+    return "lambda-daemon"
+
+
+def shared_twice() -> str:
+    return shared() * 2
