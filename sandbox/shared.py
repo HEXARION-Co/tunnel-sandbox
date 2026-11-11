@@ -1,2 +1,2 @@
 def shared() -> str:
-    return "lambda1"
+    return "lambda2"
